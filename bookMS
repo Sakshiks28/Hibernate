@@ -1,79 +1,76 @@
-package com.anudip bookMS;
+package com.anudip.bookMS;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.query.Query;
-
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-/**
- * Hello world!
- *
- */
-public class App 
-{
-	public static SessionFactory getConfiguration() 
+@Entity
+@Table(name="Books")
+public class Book {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)//id is auto incremented
+	int book_id;
+	String book_name;
+	int book_price;
+	String author_name;
+	final static String library_name=" SK Library";//only one library
+	String Availability;
+	public Book() 
+	{}
+	public Book(String book_name, int book_price, String author_name,String Availability) 
 	{
 		
-		Configuration conf = new Configuration().configure().addAnnotatedClass(Book.class);
-		SessionFactory ss = conf.buildSessionFactory();
-		return ss;
+		this.book_name = book_name;
+		this.book_price = book_price;
+		this.author_name = author_name;
+		this.Availability=Availability;
 	}
-	public static void create_book(Session ss,Transaction t) 
+	public String getAvailability() 
 	{
-		Book b1 = new Book("BookNo1",900,"KKS","Available");
-		Book b2 = new Book("BookNo2",500,"MKS","Available");
-		Book b3 = new Book("BookNo3",650,"SKS","Not Available");
-		Book b4 = new Book("BookNo4",800,"PKS","Not Available");
-		Book b5 = new Book("BookNo5",700,"NKS","Not Available");
-		
-		ss.save(b1);
-		ss.save(b2);
-		ss.save(b3);
-		ss.save(b4);
-		ss.save(b5);
-		t.commit();
+		return Availability;
 	}
-		
-	public static void getbooks(Session ss,Transaction t)
+	public void setAvailability(String availability) 
 	{
-		Query query = ss.createQuery("from Book");
-		List<Book> books = query.list();
-		for(Book getbooks:books) {
-			System.out.println("Book id: "+getbooks.getBook_id()+" Book Name: "+getbooks.getBook_name()+" Book price: "+getbooks.getBook_price()+" Author Name: "+getbooks.getAuthor_name()+" Library Name: "+getbooks.getLibrary_name()+" Availability: "+getbooks.getAvailability());
-		}
+		Availability = availability;
 	}
-	public static void updatebooks(Session ss,Transaction t) 
+	public int getBook_id() 
 	{
-		t.begin();
-		Book updatebook =ss.find(Book.class,1);
-		updatebook.setBook_name("SK");
-		ss.save(updatebook);
-		t.commit();
+		return book_id;
 	}
-	public static void deletebook(Session ss, Transaction t) 
+	public void setBook_id(int book_id)
 	{
-		t.begin();
-		Book deletebook =ss.find(Book.class, 2);
-		ss.delete(deletebook);
-		t.commit();
+		this.book_id = book_id;
 	}
-    public static void main( String[] args )
-    {
-        SessionFactory sf =getConfiguration();
-        Session ss =sf.openSession();
-        Transaction t =ss.beginTransaction();
-        
-        create_book(ss, t);
-        updatebooks(ss, t);
-        deletebook(ss, t);
-        getbooks(ss, t);
-        System.out.println("Complete");
-    }
+	public String getBook_name()
+	{
+		return book_name;
+	}
+	public void setBook_name(String book_name)
+	{
+		this.book_name = book_name;
+	}
+	public int getBook_price() 
+	{
+		return book_price;
+	}
+	public void setBook_price(int book_price) 
+	{
+		this.book_price = book_price;
+	}
+	public String getAuthor_name() 
+	{
+		return author_name;
+	}
+	public void setAuthor_name(String author_name) 
+	{
+		this.author_name = author_name;
+	}
+	public static String getLibrary_name() 
+	{
+		return library_name;
+	}
+	
+	
 }
